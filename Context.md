@@ -240,13 +240,17 @@ https://yourapp.example.com/?pid=${e://Field/PROLIFIC_PID}&item=${e://Field/ITEM
 
 ---
 
-### 11. 8-Item (CRT Question) Experiment Structure
+### 11. 8-Bot (CRT Question) Experiment Structure
 
-- The chatbot must support **up to eight CRT questions** within one Qualtrics survey.  
-- Each CRT question corresponds to an `item_number` (1–8).  
-- `item_number` is passed via the iframe URL (e.g., `...?pid=ABC123&item=4`) from Qualtrics and recorded in Google Sheets.  
-- Participants progress through all eight CRT questions sequentially within the same chat interface or across Qualtrics pages.  
-- The chatbot’s behavior and system prompt remain identical across all eight items.
+The chatbot must support up to eight CRT question bots within one Qualtrics survey.
+
+Each CRT question corresponds to a bot_number (1–8), mapped to string identifiers LongBot1 through LongBot8.
+
+bot_number is passed via the iframe URL (e.g., ...?pid=ABC123&bot=4) from Qualtrics and recorded in Google Sheets as the corresponding string (e.g., LongBot4).
+
+Participants progress through all eight CRT bots sequentially within the same chat interface or across Qualtrics pages.
+
+The chatbot’s behavior and system prompt remain identical across all eight bots.
 
 ---
 
@@ -254,19 +258,21 @@ https://yourapp.example.com/?pid=${e://Field/PROLIFIC_PID}&item=${e://Field/ITEM
 
 Each message (user or assistant) must include the following fields in Google Sheets:
 
-| Field | Description |
-|--------|-------------|
-| `timestamp` | UTC ISO timestamp |
-| `prolific_pid` | Participant’s Prolific ID |
-| `item_number` | CRT question index (1–8) |
-| `arm` | `"crt-intuitive"` |
-| `role` | `"user"` or `"assistant"` |
-| `content` | Message text |
+Field	Description
+timestamp	UTC ISO timestamp
+prolific_pid	Participant’s Prolific ID
+bot_id	String identifier for the CRT question bot (LongBot1–LongBot8)
+arm	"crt-intuitive"
+role	"user" or "assistant"
+content	Message text
 
-**Requirements:**
-- Each `(prolific_pid, item_number)` pair uniquely identifies a participant’s interaction.  
-- All rows are append-only; no overwriting of previous messages.  
-- Google Sheets is the **single source of truth** for conversation records.  
+Requirements:
+
+Each (prolific_pid, bot_id) pair uniquely identifies a participant’s interaction.
+
+All rows are append-only; no overwriting of previous messages.
+
+Google Sheets is the single source of truth for conversation records.
 
 ---
 
